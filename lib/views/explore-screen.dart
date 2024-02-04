@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:car_sale_app/model/data-models/brand-item.model.dart';
+import 'package:car_sale_app/model/view-models/car-view-model.dart';
 import 'package:car_sale_app/theme/color.dart';
 import 'package:car_sale_app/views/common/app-text.dart';
 import 'package:car_sale_app/views/common/height-spacer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExploreScreen extends StatefulWidget{
   const ExploreScreen({super.key});
@@ -18,13 +21,17 @@ class ExploreScreen extends StatefulWidget{
 
 class _ExploreScreenState extends State<ExploreScreen> {
 
+
   @override
   void initState() {
+    getCarBrands();
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
+
+    CarViewModel carViewModel = context.watch<CarViewModel>();
 
     Size size = MediaQuery.of(context).size;
     var screenHeight = size.height;
@@ -39,41 +46,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
               children: [
                 SizedBox(
                   height: screenHeight * 0.1,
-                  child: Expanded(
-                    child: ListView.builder(
-                        itemCount: 20,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index){
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: SizedBox(
-                              height: screenHeight * 0.1,
-                              width: screenWidth * 0.2,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: double.maxFinite,
-                                      width: double.maxFinite,
-                                      child: Card(
-                                        shape: CircleBorder(),
-                                        clipBehavior: Clip.hardEdge,
-                                        child: CachedNetworkImage(imageUrl: 'https://storage.googleapis.com/img.autochek.africa/marketplace/audi.png',),
-                                        color: Color(0xfff0f0f2),
-                                      ),
+                  child: ListView.builder(
+                      itemCount: carViewModel.brandItemList.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index){
+                        var brandItem = carViewModel.brandItemList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: SizedBox(
+                            height: screenHeight * 0.1,
+                            width: screenWidth * 0.2,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: double.maxFinite,
+                                    width: double.maxFinite,
+                                    child: Card(
+                                      shape: CircleBorder(),
+                                      clipBehavior: Clip.hardEdge,
+                                      child: CachedNetworkImage(imageUrl: brandItem.imageUrl,),
+                                      color: Color(0xfff0f0f2),
                                     ),
                                   ),
-                                  AppText(
-                                      'Adidas of the yeaer',
-                                    maxLines: 1,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
+                                ),
+                                AppText(
+                                  brandItem.name,
+                                  maxLines: 1,
+                                  textOverflow: TextOverflow.ellipsis,
+                                )
+                              ],
                             ),
-                          );
-                        }
-                    ),
+                          ),
+                        );
+                      }
                   ),
                 ),
                 Expanded(
@@ -177,6 +183,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ),
         )
     );
+  }
+
+  void getCarBrands(){
+    context.read<CarViewModel>().getBrandItems();
   }
 
 }
