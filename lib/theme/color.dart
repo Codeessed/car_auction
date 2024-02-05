@@ -8,7 +8,6 @@ class AppColor{
 
 }
 
-
-final Color appBackgroundColor = const Color(0xffdadae4);
-final Color appPrimaryColor = const Color(0xffDC6A2A);
+final Color appBackgroundColor = const Color(0xff6f6f8).withOpacity(0.1);
+final Color appPrimaryColor = Colors.yellow;
 final Color appTextColor = Color(0xff0000);
