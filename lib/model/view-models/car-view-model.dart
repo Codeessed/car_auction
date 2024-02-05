@@ -10,7 +10,6 @@ import 'package:car_sale_app/model/data-models/car-item.model.dart';
 import 'package:car_sale_app/model/data-models/car-media-item.model.dart';
 import 'package:car_sale_app/model/data-models/car-media-response.model.dart';
 import 'package:car_sale_app/model/data-models/car-response.model.dart';
-import 'package:car_sale_app/model/data-models/common/server-response-model.dart';
 import 'package:car_sale_app/services/app-service.dart';
 class CarViewModel extends BaseViewModel {
   AppService appService = locator<AppService>();
@@ -96,14 +95,11 @@ class CarViewModel extends BaseViewModel {
       if(carMediaResponse.carMediaList.isNotEmpty){
         List<CarMediaItemModel> carMediaItems =  (carMediaResponse.carMediaList).map((e) => CarMediaItemModel.fromJson(e)).toList();
         _carMediaItemList.addAll(carMediaItems);
-        print(carMediaItemList.map((e) => e.toJson()).toList());
-        print(carMediaItemList.where((e) => e.type.contains('video')));
         notifyListeners();
         return true;
       }
       return false;
     }catch(e){
-      print(e);
       return false;
     }
 

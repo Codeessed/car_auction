@@ -168,7 +168,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                       child: Card(
                                         shape: CircleBorder(),
                                         clipBehavior: Clip.hardEdge,
-                                        child: CachedNetworkImage(imageUrl: brandItem.imageUrl,),
+                                        child: brandItem.imageUrl.split('.').last == 'svg' ?
+                                            SvgPicture.network(brandItem.imageUrl, fit: BoxFit.contain,)
+                                            : CachedNetworkImage(imageUrl: brandItem.imageUrl,),
                                         color: Color(0xfff0f0f2),
                                       ),
                                     ),

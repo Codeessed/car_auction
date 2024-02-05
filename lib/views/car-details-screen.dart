@@ -10,6 +10,7 @@ import 'package:car_sale_app/views/common/app-text.dart';
 import 'package:car_sale_app/views/common/height-spacer.dart';
 import 'package:car_sale_app/views/common/video-widget.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +37,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   @override
   void initState() {
     var id = context.read<CarViewModel>().carDetails.id;
-    // getCarMedia(id);
-    getCarMedia('R1nVTV4Mj');
+    getCarMedia(id);
     super.initState();
   }
   
@@ -113,14 +113,13 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            HeightSpacer(0.03),
+                            const HeightSpacer(0.03),
                             AppText(
                               car.carName,
                               weight: FontWeight.bold,
-                              align: TextAlign.end,
                               size: ts2,
                             ),
-                            HeightSpacer(0.01),
+                            const HeightSpacer(0.01),
                             IntrinsicHeight(
                               child: Stack(
                                 children: [
@@ -154,7 +153,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                               carMediaList[selectedMediaIndex].type.contains('video') ? VideoWidget(videoUrl: carMediaList[selectedMediaIndex].url) : CachedNetworkImage(imageUrl: carMediaList[selectedMediaIndex].url, fit: BoxFit.cover,)
                                                   : Container()),
                                         ),
-                                        HeightSpacer(0.01),
+                                        const HeightSpacer(0.01),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 10),
                                           child: Column(
@@ -256,11 +255,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                   )
               ),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
                 ),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
                     Row(
