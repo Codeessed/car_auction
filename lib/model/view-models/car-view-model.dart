@@ -3,6 +3,9 @@ import 'package:car_sale_app/common/base-view-model.dart';
 import 'package:car_sale_app/locator.dart';
 import 'package:car_sale_app/model/data-models/brand-item.model.dart';
 import 'package:car_sale_app/model/data-models/brand-response.model.dart';
+import 'package:car_sale_app/model/data-models/car-details.model.dart';
+import 'package:car_sale_app/model/data-models/car-item.model.dart';
+import 'package:car_sale_app/model/data-models/car-response.model.dart';
 import 'package:car_sale_app/model/data-models/common/server-response-model.dart';
 import 'package:car_sale_app/services/app-service.dart';
 class CarViewModel extends BaseViewModel {
@@ -10,6 +13,12 @@ class CarViewModel extends BaseViewModel {
 
   final List<BrandItemModel> _brandItemList = [];
   List<BrandItemModel> get brandItemList => _brandItemList;
+
+  final List<CarItemModel> _carItemList = [];
+  List<CarItemModel> get carItemList => _carItemList;
+
+  CarDetailsModel? _carDetails;
+  CarDetailsModel get carDetails => _carDetails!;
 
   Future<bool> getBrandItems() async {
     BrandResponseModel brandResponse = await appService.getBrands();
@@ -26,6 +35,39 @@ class CarViewModel extends BaseViewModel {
       return false;
     }
 
+  }
+
+
+  Future<bool> getCars() async {
+    CarResponseModel carResponse = await appService.getCars();
+    try{
+      if(carResponse.result.isNotEmpty){
+        List<CarItemModel> carItems =  (carResponse.result).map((e) => CarItemModel.fromJson(e)).toList();
+        _carItemList.clear();
+        _carItemList.addAll(carItems);
+        notifyListeners();
+        return true;
+      }
+      return false;
+    }catch(e){
+      return false;
+    }
+
+  }
+
+  Future<bool> getCarDetails(String id) async {
+    CarDetailsModel? carDetailResponse = await appService.getCarDetails(id);
+    try{
+      if(carDetailResponse != null){
+        CarDetailsModel details =  carDetailResponse;
+        _carDetails = details;
+        notifyListeners();
+        return true;
+      }
+      return false;
+    }catch(e){
+      return false;
+    }
   }
 
 
